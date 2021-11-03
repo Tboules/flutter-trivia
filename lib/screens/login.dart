@@ -12,14 +12,21 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   AuthService auth = AuthService();
+  var _listener;
 
   @override
   void initState() {
-    super.initState();
-    auth.user.listen((User? user) {
+    _listener = auth.user.listen((User? user) {
       if (user == null) return;
-      if (user != null) Navigator.pushNamed(context, '/home');
+      if (user != null) Navigator.pushReplacementNamed(context, '/home');
     });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _listener.cancel();
+    super.dispose();
   }
 
   Widget build(BuildContext context) {
@@ -105,7 +112,7 @@ class LoginButton extends StatelessWidget {
         onPressed: () async {
           User? user = await loginMethod();
           print(user);
-          if (user != null) Navigator.pushNamed(context, '/home');
+          if (user != null) Navigator.pushReplacementNamed(context, '/home');
         },
       ),
     );

@@ -1,10 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../services/services.dart';
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -12,13 +14,15 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   AuthService auth = AuthService();
-  var _listener;
+  late StreamSubscription<User?> _listener;
 
   @override
   void initState() {
     _listener = auth.user.listen((User? user) {
       if (user == null) return;
-      if (user != null) Navigator.pushReplacementNamed(context, '/home');
+      if (user != null) {
+        Navigator.pushNamed(context, '/home');
+      }
     });
     super.initState();
   }
@@ -33,49 +37,60 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('login'),
+        automaticallyImplyLeading: false,
       ),
       body: Container(
-        padding: EdgeInsets.all(30),
+        padding: const EdgeInsets.all(30),
         width: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Column(
-              children: const [
-                Icon(
-                  FontAwesomeIcons.question,
-                  size: 100,
-                ),
-                Text(
-                  'Flutter Trivia!',
-                  style: TextStyle(
-                    height: 2,
-                    fontSize: 24,
-                  ),
-                )
-              ],
+        child: LoginForm(),
+      ),
+    );
+  }
+}
+
+class LoginForm extends StatelessWidget {
+  final AuthService auth = AuthService();
+  LoginForm({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Column(
+          children: const [
+            Icon(
+              FontAwesomeIcons.question,
+              size: 100,
             ),
-            Flex(
-              direction: Axis.vertical,
-              children: [
-                LoginButton(
-                  bgColor: Colors.black12,
-                  title: 'Sign in with Google',
-                  icon: FontAwesomeIcons.google,
-                  loginMethod: auth.googleSignIn,
-                ),
-                LoginButton(
-                  bgColor: Colors.white10,
-                  title: 'Annonymous',
-                  icon: FontAwesomeIcons.user,
-                  loginMethod: auth.anonSignIn,
-                )
-              ],
+            Text(
+              'Flutter Trivia!',
+              style: TextStyle(
+                height: 2,
+                fontSize: 24,
+              ),
             )
           ],
         ),
-      ),
+        Flex(
+          direction: Axis.vertical,
+          children: [
+            LoginButton(
+              bgColor: Colors.black12,
+              title: 'Sign in with Google',
+              icon: FontAwesomeIcons.google,
+              loginMethod: auth.googleSignIn,
+            ),
+            LoginButton(
+              bgColor: Colors.white10,
+              title: 'Annonymous',
+              icon: FontAwesomeIcons.user,
+              loginMethod: auth.anonSignIn,
+            )
+          ],
+        )
+      ],
     );
   }
 }
@@ -105,14 +120,14 @@ class LoginButton extends StatelessWidget {
         label: Text(title),
         style: TextButton.styleFrom(
           backgroundColor: bgColor,
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           primary: Colors.white,
-          fixedSize: Size.fromWidth(300),
+          fixedSize: const Size.fromWidth(300),
         ),
         onPressed: () async {
           User? user = await loginMethod();
           print(user);
-          if (user != null) Navigator.pushReplacementNamed(context, '/home');
+          if (user != null) Navigator.pushNamed(context, '/home');
         },
       ),
     );

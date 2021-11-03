@@ -9,7 +9,10 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('home')),
+      appBar: AppBar(
+        title: Text('home'),
+        automaticallyImplyLeading: false,
+      ),
       body: Container(
         width: double.infinity,
         child: Column(
@@ -22,7 +25,7 @@ class HomeScreen extends StatelessWidget {
               ),
               onPressed: () async {
                 await auth.signOut();
-                Navigator.pushReplacementNamed(context, '/');
+                Navigator.pushNamed(context, '/');
               },
             ),
             TextButton(

@@ -5,10 +5,12 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 
 class TriviaService extends GetxController {
-  var categoryId = 1.obs;
+  var categoryId = 9.obs;
 
-  void setCategory(RxInt catId) {
-    categoryId = catId;
+  void setCategory(int catId) {
+    categoryId.value = catId;
+    // update();
+    print(categoryId);
   }
 
   Future<List<Category>> fetchCategories() async {

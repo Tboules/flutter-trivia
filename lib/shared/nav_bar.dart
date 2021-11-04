@@ -30,6 +30,7 @@ class CustAppBar extends StatelessWidget with PreferredSizeWidget {
                     FontAwesomeIcons.user,
                     color: Colors.white70,
                   ),
+                  onTap: () => Navigator.pushNamed(context, '/user'),
                 ),
               )
             ],

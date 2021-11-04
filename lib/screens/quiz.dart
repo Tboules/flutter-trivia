@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:trivia_app/services/trivia.dart';
 
-class Quiz extends StatefulWidget {
-  Quiz({Key? key}) : super(key: key);
-
-  @override
-  _QuizState createState() => _QuizState();
-}
-
-class _QuizState extends State<Quiz> {
+class Quiz extends StatelessWidget {
+  TriviaService triv = Get.find();
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        'quiz',
+    return Center(
+      child: Obx(
+        () => Text('${triv.categoryId}'),
       ),
     );
   }

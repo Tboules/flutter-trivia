@@ -10,33 +10,54 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxWidth > 1024) {
+          return _wideScreen();
+        } else {
+          return _smallScreen();
+        }
+      },
+    );
+  }
+
+  Widget _smallScreen() {
     return Scaffold(
       appBar: const CustAppBar(
         title: 'home',
+        navigate: true,
       ),
-      body: _wideScreen(),
+      drawer: const Drawer(
+        child: QuizCategories(),
+      ),
+      body: Quiz(),
     );
   }
 
   Widget _wideScreen() {
-    return Center(
-      child: Container(
-        constraints: const BoxConstraints(maxWidth: 1600),
-        child: Row(
-          children: [
-            const Expanded(
-              child: QuizCategories(),
-              flex: 2,
-            ),
-            Expanded(
-              child: Quiz(),
-              flex: 6,
-            ),
-            const Expanded(
-              child: UserData(),
-              flex: 2,
-            )
-          ],
+    return Scaffold(
+      appBar: const CustAppBar(
+        title: 'home',
+      ),
+      body: Center(
+        child: Container(
+          constraints: const BoxConstraints(maxWidth: 1600),
+          child: Row(
+            children: [
+              const Expanded(
+                child: QuizCategories(),
+                flex: 2,
+              ),
+              Expanded(
+                child: Quiz(),
+                flex: 5,
+              ),
+              const Expanded(
+                child: UserData(),
+                flex: 2,
+              )
+            ],
+          ),
         ),
       ),
     );

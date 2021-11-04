@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:trivia_app/services/trivia.dart';
+import 'package:trivia_app/shared/nav_bar.dart';
 import './screens/screens.dart';
 
 void main() {
@@ -31,7 +33,7 @@ class _AppState extends State<App> {
 
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-          return const MyApp();
+          return MyApp();
         }
 
         // Otherwise, show something whilst waiting for initialization to complete
@@ -42,7 +44,8 @@ class _AppState extends State<App> {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
+  TriviaService triv = Get.put(TriviaService());
 
   // This widget is the root of your application.
   @override
@@ -51,7 +54,15 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       routes: {
         '/': (context) => LoginScreen(),
-        '/home': (context) => HomeScreen()
+        '/home': (context) => HomeScreen(),
+        '/user': (context) => Scaffold(
+              appBar: AppBar(
+                title: const Text(
+                  'User Data',
+                ),
+              ),
+              body: const UserData(),
+            )
       },
       theme: ThemeData(
         primarySwatch: Colors.blue,

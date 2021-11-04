@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:trivia_app/services/services.dart';
+import 'package:trivia_app/shared/nav_bar.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -9,9 +10,8 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('home'),
-        automaticallyImplyLeading: false,
+      appBar: const CustAppBar(
+        title: 'home',
       ),
       body: Container(
         width: double.infinity,

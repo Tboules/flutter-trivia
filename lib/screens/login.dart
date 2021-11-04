@@ -20,9 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     _listener = auth.user.listen((User? user) {
       if (user == null) return;
-      if (user != null) {
-        Navigator.pushNamed(context, '/home');
-      }
+      Navigator.pushNamed(context, '/home');
     });
     super.initState();
   }
@@ -33,17 +31,48 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('login'),
         automaticallyImplyLeading: false,
       ),
-      body: Container(
-        padding: const EdgeInsets.all(30),
-        width: double.infinity,
-        child: LoginForm(),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          if (constraints.maxWidth > 1024) {
+            return _wideScreen();
+          } else {
+            return _smallScreen();
+          }
+        },
       ),
+    );
+  }
+
+  Widget _wideScreen() {
+    return Row(
+      children: [
+        Expanded(child: LoginForm(), flex: 4),
+        Expanded(
+          flex: 6,
+          child: SizedBox(
+            height: double.infinity,
+            child: Image.asset(
+              'images/triv-night.jpeg',
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _smallScreen() {
+    return Container(
+      padding: const EdgeInsets.all(30),
+      width: double.infinity,
+      child: LoginForm(),
     );
   }
 }

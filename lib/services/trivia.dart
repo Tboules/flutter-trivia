@@ -1,9 +1,16 @@
 import 'dart:convert';
 
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 
-class TriviaService {
+class TriviaService extends GetxController {
+  var categoryId = 1.obs;
+
+  void setCategory(RxInt catId) {
+    categoryId = catId;
+  }
+
   Future<List<Category>> fetchCategories() async {
     String uri = 'https://opentdb.com/api_category.php';
     var res = await http.get(Uri.parse(uri));

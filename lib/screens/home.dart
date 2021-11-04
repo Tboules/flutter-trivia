@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trivia_app/screens/screens.dart';
 import 'package:trivia_app/services/services.dart';
 import 'package:trivia_app/shared/nav_bar.dart';
 
@@ -13,28 +14,28 @@ class HomeScreen extends StatelessWidget {
       appBar: const CustAppBar(
         title: 'home',
       ),
-      body: Container(
-        width: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+      body: _wideScreen(),
+    );
+  }
+
+  Widget _wideScreen() {
+    return Center(
+      child: Container(
+        constraints: const BoxConstraints(maxWidth: 1600),
+        child: Row(
           children: [
-            TextButton(
-              child: const Text(
-                'logout',
-              ),
-              onPressed: () async {
-                await auth.signOut();
-                Navigator.pushNamed(context, '/');
-              },
+            const Expanded(
+              child: QuizCategories(),
+              flex: 2,
             ),
-            TextButton(
-              child: const Text('get categories'),
-              onPressed: () async {
-                List<Category> cat = await triv.fetchCategories();
-                cat.forEach((element) => print(element.id));
-              },
+            Expanded(
+              child: Quiz(),
+              flex: 6,
             ),
+            const Expanded(
+              child: UserData(),
+              flex: 2,
+            )
           ],
         ),
       ),

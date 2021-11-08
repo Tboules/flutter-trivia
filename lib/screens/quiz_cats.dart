@@ -52,16 +52,18 @@ class _QuizCategoriesState extends State<QuizCategories> {
                         margin: const EdgeInsets.only(
                           left: 10,
                           right: 10,
-                          top: 5,
-                          bottom: 5,
+                          top: 4,
+                          bottom: 4,
                         ),
                         child: ListTile(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4)),
                           hoverColor: Colors.grey[700],
                           tileColor: Colors.grey[850],
                           title: Text(
                             '${cat.name}',
                           ),
-                          onTap: () => triv.setCategory(cat.id),
+                          onTap: () => triv.setCategory(cat),
                         ),
                       );
                     }).toList(),

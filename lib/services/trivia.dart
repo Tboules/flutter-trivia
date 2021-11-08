@@ -5,12 +5,20 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 
 class TriviaService extends GetxController {
+  List<Map<String, String>> difficulties = [
+    {'display': 'Select a Difficulty', 'value': ''},
+    {'display': 'Easy', 'value': 'easy'},
+    {'display': 'Medium', 'value': 'medium'},
+    {'display': 'Hard', 'value': 'hard'},
+  ];
   var categoryId = 9.obs;
+  var categoryName = 'General Knowledge'.obs;
 
-  void setCategory(int catId) {
-    categoryId.value = catId;
+  void setCategory(Category cat) {
+    categoryId.value = cat.id;
+    categoryName.value = cat.name;
     // update();
-    print(categoryId);
+    print(categoryName);
   }
 
   Future<List<Category>> fetchCategories() async {

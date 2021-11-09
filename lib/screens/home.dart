@@ -50,7 +50,7 @@ class HomeScreen extends StatelessWidget {
               child: Quiz(),
               flex: 5,
             ),
-            const Expanded(
+            Expanded(
               child: UserData(),
               flex: 2,
             )

@@ -22,20 +22,71 @@ class QuizQuestions extends StatelessWidget {
         children: [
           Expanded(
             flex: 7,
-            child: Center(
-              child: ElevatedButton(
-                onPressed: _quitQuiz,
-                child: const Text("reset quiz"),
-              ),
-            ),
+            child: _quiz(),
           ),
           width > 1024
-              ? const Expanded(
+              ? Expanded(
                   flex: 3,
                   child: UserData(),
                 )
               : Container()
         ],
+      ),
+    );
+  }
+
+  Widget _quiz() {
+    return Container(
+      margin: const EdgeInsets.all(10),
+      child: ListView(
+        children: triv.activeQuiz.map((question) {
+          //do some business logic here
+
+          return Container(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(bottom: 10),
+                  child: Text(
+                    question.question,
+                    style: const TextStyle(
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+                ...question.answers.map((ans) {
+                  return Container(
+                    margin: const EdgeInsets.only(bottom: 5),
+                    padding: const EdgeInsets.only(left: 10, right: 10),
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        maximumSize: const Size(500, 50),
+                        primary: Colors.white,
+                        backgroundColor: Colors.grey[700],
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(0),
+                          ),
+                        ),
+                      ),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          ans,
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                      onPressed: () => print(question.correct(ans)),
+                    ),
+                  );
+                }).toList()
+              ],
+            ),
+          );
+        }).toList(),
       ),
     );
   }

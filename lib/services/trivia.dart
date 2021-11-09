@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:html_unescape/html_unescape.dart';
 
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -49,6 +50,7 @@ class TriviaService extends GetxController {
       activeQuiz.value = quizArr.map<QuizQuestion>((question) {
         return QuizQuestion.fromJson(question);
       }).toList();
+      return 'success';
     } else {
       throw Exception('Could not load quiz');
     }
@@ -59,23 +61,28 @@ class QuizQuestion {
   final String question;
   final String correctAnswer;
   final List<String> incorrectAnswers;
+  late List<String> answers;
 
   QuizQuestion(
       {required this.question,
       required this.correctAnswer,
-      required this.incorrectAnswers});
+      required this.incorrectAnswers}) {
+    answers = _allAnswers();
+  }
 
   factory QuizQuestion.fromJson(Map<String, dynamic> json) {
+    var unescape = HtmlUnescape();
+
     return QuizQuestion(
-      question: json['question'].toString(),
-      correctAnswer: json['correct_answer'].toString(),
+      question: unescape.convert(json['question']),
+      correctAnswer: unescape.convert(json['correct_answer']),
       incorrectAnswers: json['incorrect_answers'].map<String>((ia) {
-        return ia.toString();
+        return unescape.convert(ia.toString());
       }).toList(),
     );
   }
 
-  List<String> allAnswers() {
+  List<String> _allAnswers() {
     int injectedPosition = Random().nextInt(4);
     List<String> answers = incorrectAnswers;
 

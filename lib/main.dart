@@ -62,7 +62,7 @@ class MyApp extends StatelessWidget {
                   'User Data',
                 ),
               ),
-              body: const UserData(),
+              body: UserData(),
             ),
         '/quiz': (context) => QuizQuestions(),
       },

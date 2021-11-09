@@ -29,9 +29,12 @@ class _QuizChoiceFormState extends State<QuizChoiceForm> {
     selectedItem = triv.difficulties[0]['value'] as String;
   }
 
-  _onSubmit() {
-    triv.fetchQuiz(selectedItem);
-    Get.offAllNamed('/quiz');
+  _onSubmit() async {
+    String res = await triv.fetchQuiz(selectedItem);
+
+    if (res == 'success') {
+      Get.offAllNamed('/quiz');
+    }
   }
 
   @override

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -13,12 +14,15 @@ class TriviaService extends GetxController {
   ];
   var categoryId = 9.obs;
   var categoryName = 'General Knowledge'.obs;
+  RxList<QuizQuestion> activeQuiz = <QuizQuestion>[].obs;
 
   void setCategory(Category cat) {
     categoryId.value = cat.id;
     categoryName.value = cat.name;
-    // update();
-    print(categoryName);
+  }
+
+  void resetQuiz() {
+    activeQuiz.value = [];
   }
 
   Future<List<Category>> fetchCategories() async {
@@ -31,8 +35,57 @@ class TriviaService extends GetxController {
         return Category.fromJson(item);
       }).toList();
     } else {
-      throw Exception('Failed to load album');
+      throw Exception('Failed to load categories');
     }
+  }
+
+  Future<dynamic> fetchQuiz(String dif) async {
+    String link =
+        "https://opentdb.com/api.php?amount=10&category=$categoryId&difficulty=$dif&type=multiple";
+    var res = await http.get(Uri.parse(link));
+
+    if (res.statusCode == 200) {
+      var quizArr = jsonDecode(res.body)['results'];
+      activeQuiz.value = quizArr.map<QuizQuestion>((question) {
+        return QuizQuestion.fromJson(question);
+      }).toList();
+    } else {
+      throw Exception('Could not load quiz');
+    }
+  }
+}
+
+class QuizQuestion {
+  final String question;
+  final String correctAnswer;
+  final List<String> incorrectAnswers;
+
+  QuizQuestion(
+      {required this.question,
+      required this.correctAnswer,
+      required this.incorrectAnswers});
+
+  factory QuizQuestion.fromJson(Map<String, dynamic> json) {
+    return QuizQuestion(
+      question: json['question'].toString(),
+      correctAnswer: json['correct_answer'].toString(),
+      incorrectAnswers: json['incorrect_answers'].map<String>((ia) {
+        return ia.toString();
+      }).toList(),
+    );
+  }
+
+  List<String> allAnswers() {
+    int injectedPosition = Random().nextInt(4);
+    List<String> answers = incorrectAnswers;
+
+    answers.insert(injectedPosition, correctAnswer);
+
+    return answers;
+  }
+
+  bool correct(String ans) {
+    return ans == correctAnswer;
   }
 }
 

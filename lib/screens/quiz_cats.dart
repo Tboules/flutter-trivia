@@ -36,40 +36,42 @@ class _QuizCategoriesState extends State<QuizCategories> {
         future: categories,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return Column(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  child: const Text(
-                    'Choose a Category',
-                    style: TextStyle(fontSize: 20),
+            return SafeArea(
+              child: Column(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    child: const Text(
+                      'Choose a Category',
+                      style: TextStyle(fontSize: 20),
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: ListView(
-                    children: snapshot.data!.map((cat) {
-                      return Card(
-                        margin: const EdgeInsets.only(
-                          left: 10,
-                          right: 10,
-                          top: 4,
-                          bottom: 4,
-                        ),
-                        child: ListTile(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(4)),
-                          hoverColor: Colors.grey[700],
-                          tileColor: Colors.grey[850],
-                          title: Text(
-                            '${cat.name}',
+                  Expanded(
+                    child: ListView(
+                      children: snapshot.data!.map((cat) {
+                        return Card(
+                          margin: const EdgeInsets.only(
+                            left: 10,
+                            right: 10,
+                            top: 4,
+                            bottom: 4,
                           ),
-                          onTap: () => triv.setCategory(cat),
-                        ),
-                      );
-                    }).toList(),
+                          child: ListTile(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4)),
+                            hoverColor: Colors.grey[700],
+                            tileColor: Colors.grey[850],
+                            title: Text(
+                              '${cat.name}',
+                            ),
+                            onTap: () => triv.setCategory(cat),
+                          ),
+                        );
+                      }).toList(),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             );
           } else {
             return const LoadingIndicator();

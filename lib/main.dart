@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:trivia_app/screens/quiz_questions.dart';
 import 'package:trivia_app/services/trivia.dart';
 import 'package:trivia_app/shared/nav_bar.dart';
 import './screens/screens.dart';
@@ -45,7 +46,7 @@ class _AppState extends State<App> {
 
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
-  TriviaService triv = Get.put(TriviaService());
+  final TriviaService triv = Get.put(TriviaService());
 
   // This widget is the root of your application.
   @override
@@ -53,7 +54,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Flutter Demo',
       routes: {
-        '/': (context) => LoginScreen(),
+        '/': (context) => const LoginScreen(),
         '/home': (context) => HomeScreen(),
         '/user': (context) => Scaffold(
               appBar: AppBar(
@@ -62,7 +63,8 @@ class MyApp extends StatelessWidget {
                 ),
               ),
               body: const UserData(),
-            )
+            ),
+        '/quiz': (context) => QuizQuestions(),
       },
       theme: ThemeData(
         primarySwatch: Colors.blue,

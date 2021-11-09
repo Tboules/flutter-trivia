@@ -5,8 +5,8 @@ import 'package:trivia_app/shared/nav_bar.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
-  AuthService auth = AuthService();
-  TriviaService triv = TriviaService();
+  final AuthService auth = AuthService();
+  final TriviaService triv = TriviaService();
 
   @override
   Widget build(BuildContext context) {
@@ -40,24 +40,21 @@ class HomeScreen extends StatelessWidget {
         title: 'home',
       ),
       body: Center(
-        child: Container(
-          constraints: const BoxConstraints(maxWidth: 1600),
-          child: Row(
-            children: [
-              const Expanded(
-                child: QuizCategories(),
-                flex: 2,
-              ),
-              Expanded(
-                child: Quiz(),
-                flex: 5,
-              ),
-              const Expanded(
-                child: UserData(),
-                flex: 2,
-              )
-            ],
-          ),
+        child: Row(
+          children: [
+            const Expanded(
+              child: QuizCategories(),
+              flex: 2,
+            ),
+            Expanded(
+              child: Quiz(),
+              flex: 5,
+            ),
+            const Expanded(
+              child: UserData(),
+              flex: 2,
+            )
+          ],
         ),
       ),
     );

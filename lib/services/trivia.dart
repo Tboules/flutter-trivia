@@ -13,9 +13,15 @@ class TriviaService extends GetxController {
     {'display': 'Medium', 'value': 'medium'},
     {'display': 'Hard', 'value': 'hard'},
   ];
-  var categoryId = 9.obs;
-  var categoryName = 'General Knowledge'.obs;
+  RxInt categoryId = 9.obs;
+  RxString categoryName = 'General Knowledge'.obs;
   RxList<QuizQuestion> activeQuiz = <QuizQuestion>[].obs;
+  RxInt correctAnswers = 0.obs;
+
+  void setCorrectAnswers() {
+    correctAnswers++;
+    print(correctAnswers);
+  }
 
   void setCategory(Category cat) {
     categoryId.value = cat.id;
@@ -57,11 +63,12 @@ class TriviaService extends GetxController {
   }
 }
 
-class QuizQuestion {
+class QuizQuestion extends GetxController {
   final String question;
   final String correctAnswer;
   final List<String> incorrectAnswers;
   late List<String> answers;
+  final RxBool answered = false.obs;
 
   QuizQuestion(
       {required this.question,
@@ -93,6 +100,10 @@ class QuizQuestion {
 
   bool correct(String ans) {
     return ans == correctAnswer;
+  }
+
+  void setAnswered() {
+    answered.value = true;
   }
 }
 

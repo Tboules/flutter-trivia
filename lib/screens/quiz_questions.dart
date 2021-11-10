@@ -58,30 +58,7 @@ class QuizQuestions extends StatelessWidget {
                   ),
                 ),
                 ...question.answers.map((ans) {
-                  return Container(
-                    margin: const EdgeInsets.only(bottom: 5),
-                    padding: const EdgeInsets.only(left: 10, right: 10),
-                    child: TextButton(
-                      style: TextButton.styleFrom(
-                        maximumSize: const Size(500, 50),
-                        primary: Colors.white,
-                        backgroundColor: Colors.grey[700],
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(0),
-                          ),
-                        ),
-                      ),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          ans,
-                          textAlign: TextAlign.left,
-                        ),
-                      ),
-                      onPressed: () => print(question.correct(ans)),
-                    ),
-                  );
+                  return AnswerOption(answer: ans, question: question);
                 }).toList()
               ],
             ),
@@ -121,6 +98,70 @@ class QuizQuestions extends StatelessWidget {
                 ),
               )
             ],
+    );
+  }
+}
+
+class AnswerOption extends StatefulWidget {
+  String answer;
+  QuizQuestion question;
+  AnswerOption({Key? key, required this.answer, required this.question})
+      : super(key: key);
+
+  @override
+  _AnswerOptionState createState() => _AnswerOptionState();
+}
+
+class _AnswerOptionState extends State<AnswerOption> {
+  bool clicked = false;
+
+  @override
+  Widget build(BuildContext context) {
+    bool correct = widget.question.correct(widget.answer);
+
+    Color? determineColor() {
+      if (correct) {
+        return Colors.green;
+      } else if (clicked && !correct) {
+        return Colors.red;
+      } else {
+        return Colors.grey[700];
+      }
+    }
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 5),
+      padding: const EdgeInsets.only(left: 10, right: 10),
+      child: Obx(
+        () => TextButton(
+          style: TextButton.styleFrom(
+            maximumSize: const Size(500, 50),
+            primary: Colors.white,
+            backgroundColor: widget.question.answered.value
+                ? determineColor()
+                : Colors.grey[700],
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(0),
+              ),
+            ),
+          ),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              widget.answer,
+              textAlign: TextAlign.left,
+            ),
+          ),
+          onPressed: () {
+            if (widget.question.answered.value) return;
+            widget.question.setAnswered();
+            setState(() {
+              clicked = !clicked;
+            });
+          },
+        ),
+      ),
     );
   }
 }

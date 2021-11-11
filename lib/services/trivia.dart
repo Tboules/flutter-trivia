@@ -17,10 +17,14 @@ class TriviaService extends GetxController {
   RxString categoryName = 'General Knowledge'.obs;
   RxList<QuizQuestion> activeQuiz = <QuizQuestion>[].obs;
   RxInt correctAnswers = 0.obs;
+  RxInt questionsAnswered = 0.obs;
+
+  void setQuestionsAnswered() {
+    questionsAnswered++;
+  }
 
   void setCorrectAnswers() {
     correctAnswers++;
-    print(correctAnswers);
   }
 
   void setCategory(Category cat) {
@@ -30,6 +34,8 @@ class TriviaService extends GetxController {
 
   void resetQuiz() {
     activeQuiz.value = [];
+    correctAnswers.value = 0;
+    questionsAnswered.value = 0;
   }
 
   Future<List<Category>> fetchCategories() async {

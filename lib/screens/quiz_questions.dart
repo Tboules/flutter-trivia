@@ -40,8 +40,6 @@ class QuizQuestions extends StatelessWidget {
       margin: const EdgeInsets.all(10),
       child: ListView(
         children: triv.activeQuiz.map((question) {
-          //do some business logic here
-
           return Container(
             padding: const EdgeInsets.all(10),
             child: Column(
@@ -103,20 +101,23 @@ class QuizQuestions extends StatelessWidget {
 }
 
 class AnswerOption extends StatefulWidget {
-  String answer;
-  QuizQuestion question;
-  AnswerOption({Key? key, required this.answer, required this.question})
+  final String answer;
+  final QuizQuestion question;
+  const AnswerOption({Key? key, required this.answer, required this.question})
       : super(key: key);
 
   @override
   _AnswerOptionState createState() => _AnswerOptionState();
 }
 
-class _AnswerOptionState extends State<AnswerOption> {
+class _AnswerOptionState extends State<AnswerOption>
+    with AutomaticKeepAliveClientMixin {
   bool clicked = false;
+  final TriviaService triv = Get.find();
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     bool correct = widget.question.correct(widget.answer);
 
     Color? determineColor() {
@@ -156,12 +157,38 @@ class _AnswerOptionState extends State<AnswerOption> {
           onPressed: () {
             if (widget.question.answered.value) return;
             widget.question.setAnswered();
+            if (correct) triv.setCorrectAnswers();
+            triv.setQuestionsAnswered();
             setState(() {
               clicked = !clicked;
             });
+
+            if (triv.questionsAnswered.value == 10) {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                  title: Text('Completed Quiz about ${triv.categoryName}'),
+                  content: Text(
+                      'Results: ${triv.correctAnswers} / ${triv.questionsAnswered}'),
+                  actions: [
+                    TextButton(
+                      child: const Text('OK'),
+                      onPressed: () {
+                        triv.resetQuiz();
+                        print('save quiz results to db');
+                        Get.offAllNamed('/home');
+                      },
+                    ),
+                  ],
+                ),
+              );
+            }
           },
         ),
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

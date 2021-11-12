@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:trivia_app/screens/screens.dart';
-import 'package:trivia_app/services/trivia.dart';
+import 'package:trivia_app/services/services.dart';
 
 class QuizQuestions extends StatelessWidget {
   QuizQuestions({Key? key}) : super(key: key);
@@ -114,6 +114,7 @@ class _AnswerOptionState extends State<AnswerOption>
     with AutomaticKeepAliveClientMixin {
   bool clicked = false;
   final TriviaService triv = Get.find();
+  final QuizReportsService qr = QuizReportsService();
 
   @override
   Widget build(BuildContext context) {
@@ -173,9 +174,10 @@ class _AnswerOptionState extends State<AnswerOption>
                   actions: [
                     TextButton(
                       child: const Text('OK'),
-                      onPressed: () {
+                      onPressed: () async {
+                        await qr.saveUserQuizData(
+                            triv.categoryName.value, triv.correctAnswers.value);
                         triv.resetQuiz();
-                        print('save quiz results to db');
                         Get.offAllNamed('/home');
                       },
                     ),

@@ -1,4 +1,5 @@
 #!/bin/bash
+echo 'starting'
 
 # Get flutter
 git clone https://github.com/flutter/flutter.git

@@ -70,26 +70,28 @@ class _QuizReportListState extends State<QuizReportList> {
           );
         }
         return Expanded(
-            child: ListView(
-          children: snapshot.data!.map((quizR) {
-            return Card(
-              margin: const EdgeInsets.only(
-                left: 10,
-                right: 10,
-                top: 4,
-                bottom: 4,
-              ),
-              child: ListTile(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4)),
-                hoverColor: Colors.grey[700],
-                tileColor: Colors.grey[850],
-                title: Text(quizR.quizCategory),
-                subtitle: Text('${quizR.correctAnswers} / 10'),
-              ),
-            );
-          }).toList(),
-        ));
+          child: ListView(
+            controller: ScrollController(),
+            children: snapshot.data!.map((quizR) {
+              return Card(
+                margin: const EdgeInsets.only(
+                  left: 10,
+                  right: 10,
+                  top: 4,
+                  bottom: 4,
+                ),
+                child: ListTile(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4)),
+                  hoverColor: Colors.grey[700],
+                  tileColor: Colors.grey[850],
+                  title: Text(quizR.quizCategory),
+                  subtitle: Text('${quizR.correctAnswers} / 10'),
+                ),
+              );
+            }).toList(),
+          ),
+        );
       },
     );
   }

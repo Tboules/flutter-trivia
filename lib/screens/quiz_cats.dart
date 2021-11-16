@@ -48,6 +48,7 @@ class _QuizCategoriesState extends State<QuizCategories> {
                   ),
                   Expanded(
                     child: ListView(
+                      controller: ScrollController(),
                       children: snapshot.data!.map((cat) {
                         return Card(
                           margin: const EdgeInsets.only(

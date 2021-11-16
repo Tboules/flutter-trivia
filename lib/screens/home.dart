@@ -24,7 +24,7 @@ class HomeScreen extends StatelessWidget {
   Widget _smallScreen() {
     return Scaffold(
       appBar: const CustAppBar(
-        title: 'home',
+        title: 'home test',
         navigate: true,
       ),
       drawer: const Drawer(
